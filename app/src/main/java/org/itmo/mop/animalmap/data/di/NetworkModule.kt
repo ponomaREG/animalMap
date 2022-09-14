@@ -32,7 +32,8 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRecipeApi(retrofit: Retrofit): CoordinatesAPI = retrofit.create(CoordinatesAPI::class.java)
+    fun provideRecipeApi(retrofit: Retrofit): CoordinatesAPI =
+        retrofit.create(CoordinatesAPI::class.java)
 
 }
 

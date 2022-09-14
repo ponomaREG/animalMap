@@ -3,7 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/hpisd/AndroidStudioProjects/AnimalMap/app/src/main/res/layout/activity_maps.xml" value="0.1" />
+        <entry key="..\:/Users/hpisd/AndroidStudioProjects/AnimalMap/app/src/main/res/drawable/avatar_placeholder.xml" value="0.1075" />
+        <entry key="..\:/Users/hpisd/AndroidStudioProjects/AnimalMap/app/src/main/res/drawable/ic_animal.xml" value="0.1075" />
+        <entry key="..\:/Users/hpisd/AndroidStudioProjects/AnimalMap/app/src/main/res/drawable/ic_animal_svgrepo_com.xml" value="0.1075" />
+        <entry key="..\:/Users/hpisd/AndroidStudioProjects/AnimalMap/app/src/main/res/layout/activity_add_animal.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/hpisd/AndroidStudioProjects/AnimalMap/app/src/main/res/layout/activity_detail.xml" value="0.14666666666666667" />
+        <entry key="..\:/Users/hpisd/AndroidStudioProjects/AnimalMap/app/src/main/res/layout/activity_maps.xml" value="0.12" />
       </map>
     </option>
   </component>

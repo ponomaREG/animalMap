@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
     id 'kotlin-kapt'
+    id 'kotlin-parcelize'
     id "dagger.hilt.android.plugin"
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.5.10'
 }
@@ -36,6 +37,12 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    kotlinOptions {
+        freeCompilerArgs += [
+                "-Xjvm-default=all",
+        ]
+    }
 }
 
 dependencies {
@@ -62,4 +69,8 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.5.2")
     //LIFECYCLE
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1"
+    //GLIDE
+
+    implementation 'com.github.bumptech.glide:glide:4.13.2'
+    kapt 'com.github.bumptech.glide:compiler:4.13.2'
 }

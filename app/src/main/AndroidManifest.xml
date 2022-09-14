@@ -4,6 +4,7 @@
     package="org.itmo.mop.animalmap">
 
     <application
+        android:name=".AnimalApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -13,7 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AnimalMap"
         tools:targetApi="31">
-
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -27,18 +27,27 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyB0W4q4tfA-MBmQnwKguJOjyq_PqvQZwj4" />
+            android:value="${MAPS_API_KEY}" />
 
         <activity
-            android:name=".presentation.MapsActivity"
+            android:name="org.itmo.mop.animalmap.presentation.screen.map.MapsActivity"
             android:exported="true"
-            android:label="@string/title_activity_maps">
+            android:label="@string/title_activity_maps"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="org.itmo.mop.animalmap.presentation.screen.detail.DetailActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".presentation.screen.add_animal.AddAnimalActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
