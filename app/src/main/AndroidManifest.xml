@@ -30,24 +30,16 @@
             android:value="${MAPS_API_KEY}" />
 
         <activity
-            android:name="org.itmo.mop.animalmap.presentation.screen.map.MapsActivity"
+            android:name="org.itmo.mop.animalmap.presentation.screen.MainActivity"
             android:exported="true"
-            android:label="@string/title_activity_maps"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="org.itmo.mop.animalmap.presentation.screen.detail.DetailActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"/>
-        <activity
-            android:name=".presentation.screen.add_animal.AddAnimalActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

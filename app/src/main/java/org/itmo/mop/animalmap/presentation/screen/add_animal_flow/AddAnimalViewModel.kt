@@ -1,10 +1,11 @@
-package org.itmo.mop.animalmap.presentation.screen.add_animal
+package org.itmo.mop.animalmap.presentation.screen.add_animal_flow
 
 import android.net.Uri
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import org.itmo.mop.animalmap.R
 import org.itmo.mop.animalmap.domain.model.AnimalCoordinate
 import org.itmo.mop.animalmap.domain.repository.CoordinatesRepository
 import org.itmo.mop.animalmap.presentation.base.BaseViewModel
@@ -20,7 +21,58 @@ class AddAnimalViewModel @Inject constructor(
     override val initialState: AddAnimalState
         get() = AddAnimalState()
 
-    fun onButtonAddClicked() = with(state.value) {
+    fun onButtonNextPageClicked() = with(state.value) {
+        val event = when (currentStateFlow) {
+            AddAnimalCurrentStateFlow.Name ->
+                AddAnimalEvent.ShowNextPage(R.id.action_add_flow_name_to_add_flow_photo)
+            AddAnimalCurrentStateFlow.Photo ->
+                AddAnimalEvent.ShowNextPage(R.id.action_add_flow_photo_to_add_flow_position)
+            else -> TODO()
+        }
+        submitEvent(event)
+    }
+
+    fun onButtonSkipClicked() {
+        submitEvent(AddAnimalEvent.ShowNextPage(R.id.action_add_flow_photo_to_add_flow_position))
+    }
+
+    fun onMapReady() {
+        updateState {
+            copy(
+                isLoading = false
+            )
+        }
+    }
+
+    fun onAddAnimalNameShow() {
+        updateState {
+            copy(
+                currentStateFlow = AddAnimalCurrentStateFlow.Name,
+                isButtonNextPageEnabled = name.isNotEmpty() && description.isNotEmpty()
+            )
+        }
+    }
+
+    fun onAddAnimalPhotoShow() {
+        updateState {
+            copy(
+                currentStateFlow = AddAnimalCurrentStateFlow.Photo,
+                isButtonNextPageEnabled = false
+            )
+        }
+    }
+
+    fun onAddAnimalPositionShow() {
+        updateState {
+            copy(
+                currentStateFlow = AddAnimalCurrentStateFlow.Position,
+                isButtonNextPageEnabled = latLng != null,
+                isLoading = true
+            )
+        }
+    }
+
+    fun onButtonSaveAnimalClicked() = with(state.value) {
         viewModelScope.launch {
             val newMarkerId = coordinatesRepository.addAnimal(
                 name = name,
@@ -38,7 +90,7 @@ class AddAnimalViewModel @Inject constructor(
                     longitude = latLng.longitude.toString(),
                     image = null //TODO: С этим желательно что-нибудь сделать
                 )
-                submitEvent(AddAnimalEvent.CloseActivity(newMarker))
+                submitEvent(AddAnimalEvent.FinishFlow(newMarker))
             }
         }
     }
@@ -51,7 +103,7 @@ class AddAnimalViewModel @Inject constructor(
         updateState {
             copy(
                 name = name,
-                isButtonAddEnabled = name.isNotEmpty() && description.isNotEmpty() && latLng != null
+                isButtonNextPageEnabled = name.isNotEmpty() && description.isNotEmpty()
             )
         }
     }
@@ -60,7 +112,7 @@ class AddAnimalViewModel @Inject constructor(
         updateState {
             copy(
                 description = description,
-                isButtonAddEnabled = name.isNotEmpty() && description.isNotEmpty() && latLng != null
+                isButtonNextPageEnabled = name.isNotEmpty() && description.isNotEmpty()
             )
         }
     }
@@ -69,7 +121,7 @@ class AddAnimalViewModel @Inject constructor(
         updateState {
             copy(
                 latLng = latLng,
-                isButtonAddEnabled = name.isNotEmpty() && description.isNotEmpty()
+                isButtonNextPageEnabled = true
             )
         }
     }
@@ -78,7 +130,8 @@ class AddAnimalViewModel @Inject constructor(
         updateState {
             copy(
                 imageUri = photoUri,
-                imageStream = photoStream
+                imageStream = photoStream,
+                isButtonNextPageEnabled = true
             )
         }
     }
@@ -86,16 +139,24 @@ class AddAnimalViewModel @Inject constructor(
 
 data class AddAnimalState(
     val isLoading: Boolean = false,
-    val isButtonAddEnabled: Boolean = false,
+    val isButtonNextPageEnabled: Boolean = false,
     val name: String = "",
     val description: String = "",
     val latLng: LatLng? = null,
     val imageUri: Uri? = null,
     val imageStream: InputStream? = null,
+    val currentStateFlow: AddAnimalCurrentStateFlow = AddAnimalCurrentStateFlow.Name
 )
 
 sealed class AddAnimalEvent : Event {
-    class CloseActivity(val newMarker: AnimalCoordinate) : AddAnimalEvent()
     class ShowToast(val message: String) : AddAnimalEvent()
     object OpenPhotoPicker : AddAnimalEvent()
+    class ShowNextPage(val actionId: Int) : AddAnimalEvent()
+    class FinishFlow(val marker: AnimalCoordinate) : AddAnimalEvent()
+}
+
+sealed class AddAnimalCurrentStateFlow {
+    object Name : AddAnimalCurrentStateFlow()
+    object Photo : AddAnimalCurrentStateFlow()
+    object Position : AddAnimalCurrentStateFlow()
 }

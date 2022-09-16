@@ -26,11 +26,11 @@ class MapsViewModel @Inject constructor(private val coordinatesRepository: Coord
     }
 
     fun onMarkerClicked(markerId: Int) {
-        submitEvent(MapsEvent.ShowDetailActivity(markerId))
+        submitEvent(MapsEvent.ShowDetailFragment(markerId))
     }
 
     fun onAddAnimalClicked() {
-        submitEvent(MapsEvent.ShoAddAnimalActivity)
+        submitEvent(MapsEvent.ShoAddAnimalFragment)
     }
 
     fun onNewAnimalAdded(animalCoordinate: AnimalCoordinate) {
@@ -56,11 +56,14 @@ class MapsViewModel @Inject constructor(private val coordinatesRepository: Coord
                 updateState {
                     copy(isLoading = false, coordinates = coordinates)
                 }
-                delay(10000L)
+                delay(REQUEST_DELAY)
             }
         }
     }
 
+    private companion object {
+        const val REQUEST_DELAY = 10000L
+    }
 
 }
 
@@ -70,6 +73,6 @@ data class MapsViewModelState(
 )
 
 sealed class MapsEvent : Event {
-    class ShowDetailActivity(val animalId: Int) : MapsEvent()
-    object ShoAddAnimalActivity : MapsEvent()
+    class ShowDetailFragment(val animalId: Int) : MapsEvent()
+    object ShoAddAnimalFragment : MapsEvent()
 }

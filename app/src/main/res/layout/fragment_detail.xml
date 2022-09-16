@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingBottom="30dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/animal_avatar_cv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:cardCornerRadius="10dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/animal_avatar_iv"
+            android:layout_width="match_parent"
+            android:layout_height="240dp"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/avatar_placeholder" />
+
+    </androidx.cardview.widget.CardView>
+
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/animal_shimmer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:outlineProvider="background"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/shimmer"
+            layout="@layout/shimmer_animal_detail" />
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+
+    <TextView
+        android:id="@+id/animal_name_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/animal_avatar_cv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0"
+        android:layout_marginTop="18dp"
+        android:layout_marginHorizontal="16dp"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        tools:text="Шлепа" />
+
+    <TextView
+        android:id="@+id/animal_description_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/animal_name_tv"
+        android:layout_marginHorizontal="16dp"
+        android:paddingBottom="24dp"
+        android:textSize="21sp"
+        tools:text="@tools:sample/lorem/random" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/animal_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:constraint_referenced_ids="animal_avatar_cv, animal_description_tv, animal_name_tv"
+        android:visibility="gone" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

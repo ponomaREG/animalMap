@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/add_animal_flow_graph"
+    app:startDestination="@id/add_flow_name">
+    <fragment
+        android:id="@+id/add_flow_name"
+        android:name="org.itmo.mop.animalmap.presentation.screen.add_animal_flow.AddAnimalNameFragment"
+        tools:layout="@layout/fragment_add_animal_name">
+        <action
+            android:id="@+id/action_add_flow_name_to_add_flow_photo"
+            app:destination="@id/add_flow_photo"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/add_flow_photo"
+        android:name="org.itmo.mop.animalmap.presentation.screen.add_animal_flow.AddAnimalPhotoFragment"
+        tools:layout="@layout/fragment_add_animal_photo">
+        <action
+            android:id="@+id/action_add_flow_photo_to_add_flow_position"
+            app:destination="@id/add_flow_position"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/add_flow_position"
+        android:name="org.itmo.mop.animalmap.presentation.screen.add_animal_flow.AddAnimalPositionFragment"
+        tools:layout="@layout/fragment_add_animal_position" />
+</navigation>

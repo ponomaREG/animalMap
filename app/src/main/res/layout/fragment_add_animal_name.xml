@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_begin"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintGuide_begin="16dp"
+        android:orientation="vertical" />
+
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline_end"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintGuide_end="16dp"
+        android:orientation="vertical" />
+
+    <TextView
+        android:id="@+id/add_animal_name_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline_begin"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        app:layout_constraintHorizontal_bias="0"
+        android:layout_marginTop="24dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title.H1"
+        android:text="Опишите его" />
+
+    <TextView
+        android:id="@+id/name_field_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/add_animal_name_title"
+        app:layout_constraintStart_toStartOf="@id/guideline_begin"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title.H3"
+        app:layout_constraintHorizontal_bias="0"
+        android:layout_marginTop="24dp"
+        android:text="Имя" />
+
+    <EditText
+        android:id="@+id/name_field_et"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:layout_constraintTop_toBottomOf="@id/name_field_title_tv"
+        app:layout_constraintStart_toStartOf="@id/guideline_begin"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        app:layout_constrainedWidth="true"
+        android:background="@drawable/add_animal_input_background"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="4dp"
+        android:textSize="16sp"
+        android:maxLines="1"
+        android:nextFocusDown="@id/description_field_et"
+        android:singleLine="true"
+        android:inputType="text"
+        tools:text="@tools:sample/lorem" />
+
+    <TextView
+        android:id="@+id/description_field_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/name_field_et"
+        app:layout_constraintStart_toStartOf="@id/guideline_begin"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title.H3"
+        app:layout_constraintHorizontal_bias="0"
+        android:layout_marginTop="12dp"
+        android:text="Описание" />
+
+    <EditText
+        android:id="@+id/description_field_et"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        app:layout_constraintTop_toBottomOf="@id/description_field_title_tv"
+        app:layout_constraintStart_toStartOf="@id/guideline_begin"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        app:layout_constrainedWidth="true"
+        android:layout_marginTop="8dp"
+        android:textSize="16sp"
+        android:background="@drawable/add_animal_input_background"
+        android:maxLines="5"
+        android:gravity="top"
+        android:padding="16dp"
+        android:inputType="textImeMultiLine"
+        tools:text="@tools:sample/lorem/random" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/apply_button"
+        android:layout_width="250dp"
+        android:layout_height="60dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline_begin"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        app:layout_constrainedWidth="true"
+        android:theme="@style/Widget.MaterialComponents.Button.ButtonAddAnimalFlowApply"
+        android:text="Далее" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
