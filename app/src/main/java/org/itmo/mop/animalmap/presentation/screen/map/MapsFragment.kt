@@ -1,7 +1,9 @@
 package org.itmo.mop.animalmap.presentation.screen.map
 
+import android.Manifest
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.isInvisible
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
@@ -25,6 +27,13 @@ class MapsFragment :
     private var gMap: GoogleMap? = null
 
     override val viewModel: MapsViewModel by viewModels()
+
+    private val locationPermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            gMap?.uiSettings?.isMyLocationButtonEnabled = isGranted
+            gMap?.uiSettings?.isMapToolbarEnabled = isGranted
+            gMap?.isMyLocationEnabled = isGranted
+        }
 
     override fun initBinding(inflater: LayoutInflater, container: ViewGroup?) {
         _binding = FragmentMapsBinding.inflate(inflater, container, false)
@@ -89,6 +98,7 @@ class MapsFragment :
         gMap = map
         gMap?.moveToStartLocation()
         viewModel.onMapReady()
+        locationPermission.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
         gMap?.setOnInfoWindowClickListener {
             viewModel.onMarkerClicked(it.tag as Int)
         }

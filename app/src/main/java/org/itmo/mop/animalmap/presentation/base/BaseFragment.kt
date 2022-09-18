@@ -9,6 +9,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.viewbinding.ViewBinding
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 abstract class BaseFragment<B : ViewBinding, S, E : Event, V : BaseViewModel<S, E>> : Fragment() {
@@ -44,7 +45,11 @@ abstract class BaseFragment<B : ViewBinding, S, E : Event, V : BaseViewModel<S, 
         prepareView()
         lifecycleScope.launch {
             viewLifecycleOwner.lifecycle.repeatOnLifecycle(Lifecycle.State.RESUMED) {
-                viewModel.state.collect(this@BaseFragment::collectState)
+                viewModel.state
+                    .distinctUntilChanged { old, new ->
+                        old == new
+                    }
+                    .collect(this@BaseFragment::collectState)
             }
         }
         lifecycleScope.launch {
