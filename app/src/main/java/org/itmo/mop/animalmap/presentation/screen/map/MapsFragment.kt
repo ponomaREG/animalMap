@@ -13,6 +13,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.maps.android.clustering.ClusterManager
 import dagger.hilt.android.AndroidEntryPoint
 import org.itmo.mop.animalmap.R
 import org.itmo.mop.animalmap.databinding.FragmentMapsBinding
@@ -25,6 +26,7 @@ class MapsFragment :
     OnMapReadyCallback {
 
     private var gMap: GoogleMap? = null
+    private var clusterManager: ClusterManager<MarkerItem>? = null
 
     override val viewModel: MapsViewModel by viewModels()
 
@@ -57,26 +59,11 @@ class MapsFragment :
         }
     }
 
-    override fun collectState(state: MapsViewModelState) = with(binding) {
+    override fun collectState(state: MapsViewModelState): Unit = with(binding) {
         loadingIndicator.root.isVisible = state.isLoading
         contentGroup.isInvisible = state.isLoading
-        state.coordinates.forEach { animalCoordinate ->
-            gMap?.addMarker(
-                MarkerOptions().apply {
-                    position(
-                        LatLng(
-                            animalCoordinate.latitude.toDouble(),
-                            animalCoordinate.longitude.toDouble()
-                        )
-                    )
-                    title(animalCoordinate.name)
-                }
-            ).also { marker ->
-                marker?.let {
-                    it.tag = animalCoordinate.id
-                }
-            }
-        }
+        clusterManager?.clearItems()
+        clusterManager?.addItems(state.markers)
     }
 
     override fun collectEvent(event: MapsEvent) {
@@ -96,11 +83,14 @@ class MapsFragment :
 
     override fun onMapReady(map: GoogleMap) {
         gMap = map
-        gMap?.moveToStartLocation()
+        map.moveToStartLocation()
         viewModel.onMapReady()
         locationPermission.launch(Manifest.permission.ACCESS_COARSE_LOCATION)
-        gMap?.setOnInfoWindowClickListener {
-            viewModel.onMarkerClicked(it.tag as Int)
+        clusterManager = ClusterManager(requireContext(), map)
+        map.setOnCameraIdleListener(clusterManager)
+        map.setOnMarkerClickListener(clusterManager)
+        clusterManager?.setOnClusterItemInfoWindowClickListener {
+            viewModel.onMarkerClicked(it.animalCoordinate.id)
         }
     }
 }

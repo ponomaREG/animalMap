@@ -1,6 +1,8 @@
 package org.itmo.mop.animalmap.presentation.screen.map
 
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.clustering.ClusterItem
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -33,6 +35,7 @@ class MapsViewModel @Inject constructor(private val coordinatesRepository: Coord
         submitEvent(MapsEvent.ShoAddAnimalFragment)
     }
 
+    @Deprecated("Обновляется запросом")
     fun onNewAnimalAdded(animalCoordinate: AnimalCoordinate) {
         updateState {
             copy(
@@ -54,7 +57,11 @@ class MapsViewModel @Inject constructor(private val coordinatesRepository: Coord
             while (isActive) {
                 val coordinates = coordinatesRepository.getAllCoordinates()
                 updateState {
-                    copy(isLoading = false, coordinates = coordinates)
+                    copy(
+                        isLoading = false,
+                        coordinates = coordinates,
+                        markers = coordinates.map { MarkerItem(it) }
+                    )
                 }
                 delay(REQUEST_DELAY)
             }
@@ -69,10 +76,22 @@ class MapsViewModel @Inject constructor(private val coordinatesRepository: Coord
 
 data class MapsViewModelState(
     val isLoading: Boolean = true,
-    val coordinates: List<AnimalCoordinate> = emptyList()
+    val coordinates: List<AnimalCoordinate> = emptyList(),
+    val markers: List<MarkerItem> = emptyList()
 )
 
 sealed class MapsEvent : Event {
     class ShowDetailFragment(val animalId: Int) : MapsEvent()
     object ShoAddAnimalFragment : MapsEvent()
+}
+
+class MarkerItem(
+    val animalCoordinate: AnimalCoordinate
+): ClusterItem {
+
+    override fun getPosition(): LatLng = LatLng(animalCoordinate.latitude.toDouble(), animalCoordinate.longitude.toDouble())
+
+    override fun getTitle(): String = animalCoordinate.name
+
+    override fun getSnippet(): String? = null
 }
