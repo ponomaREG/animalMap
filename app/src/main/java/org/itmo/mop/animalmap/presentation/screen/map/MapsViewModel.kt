@@ -1,5 +1,6 @@
 package org.itmo.mop.animalmap.presentation.screen.map
 
+import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import com.google.maps.android.clustering.ClusterItem
@@ -45,6 +46,7 @@ class MapsViewModel @Inject constructor(private val coordinatesRepository: Coord
     }
 
     fun onStartAndMapReady() {
+        if (periodicWork != null) periodicWork?.cancel() //TODO: Баг, создается куча периодчных запросов. Критично
         loadCoordinates()
     }
 

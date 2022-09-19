@@ -52,13 +52,10 @@
         app:layout_constraintStart_toStartOf="@id/guideline_begin"
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
         app:layout_constrainedWidth="true"
-        android:background="@drawable/add_animal_input_background"
-        android:paddingHorizontal="16dp"
-        android:paddingVertical="4dp"
-        android:textSize="16sp"
         android:maxLines="1"
         android:nextFocusDown="@id/description_field_et"
         android:singleLine="true"
+        style="@style/InputField"
         android:inputType="text"
         tools:text="@tools:sample/lorem" />
 
@@ -83,11 +80,8 @@
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
         app:layout_constrainedWidth="true"
         android:layout_marginTop="8dp"
-        android:textSize="16sp"
-        android:background="@drawable/add_animal_input_background"
+        style="@style/InputField"
         android:maxLines="5"
-        android:gravity="top"
-        android:padding="16dp"
         android:inputType="textImeMultiLine"
         tools:text="@tools:sample/lorem/random" />
 

@@ -6,16 +6,18 @@ import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import org.itmo.mop.animalmap.R
-import org.itmo.mop.animalmap.domain.model.AnimalCoordinate
+import org.itmo.mop.animalmap.data.persistence.TokenPersistence
 import org.itmo.mop.animalmap.domain.repository.CoordinatesRepository
 import org.itmo.mop.animalmap.presentation.base.BaseViewModel
 import org.itmo.mop.animalmap.presentation.base.Event
+import retrofit2.HttpException
 import java.io.InputStream
 import javax.inject.Inject
 
 @HiltViewModel
 class AddAnimalViewModel @Inject constructor(
     private val coordinatesRepository: CoordinatesRepository,
+    private val tokenPersistence: TokenPersistence,
 ) : BaseViewModel<AddAnimalState, AddAnimalEvent>() {
 
     override val initialState: AddAnimalState
@@ -74,23 +76,23 @@ class AddAnimalViewModel @Inject constructor(
 
     fun onButtonSaveAnimalClicked() = with(state.value) {
         viewModelScope.launch {
-            val newMarkerId = coordinatesRepository.addAnimal(
-                name = name,
-                description = description,
-                latitude = latLng!!.latitude,
-                longitude = latLng.longitude,
-                photo = imageStream
-            )
-            if (newMarkerId < 0) submitEvent(AddAnimalEvent.ShowToast("Не удалось добавить!")) else {
-                val newMarker = AnimalCoordinate(
-                    id = newMarkerId,
+            //TODO: Ленивая обработка ошибок, желательно вынести это все в слой даты
+            try {
+                val newMarkerId = coordinatesRepository.addAnimal(
                     name = name,
                     description = description,
-                    latitude = latLng.latitude.toString(),
-                    longitude = latLng.longitude.toString(),
-                    image = null //TODO: С этим желательно что-нибудь сделать
+                    latitude = latLng!!.latitude,
+                    longitude = latLng.longitude,
+                    photo = imageStream
                 )
-                submitEvent(AddAnimalEvent.FinishFlow(newMarker))
+                if (newMarkerId < 0) submitEvent(AddAnimalEvent.ShowToast("Не удалось добавить!"))
+                submitEvent(AddAnimalEvent.FinishFlow)
+            } catch (h: HttpException) {
+                val event: AddAnimalEvent = if (h.code() == 403) {
+                    tokenPersistence.clearImmediately()
+                    AddAnimalEvent.GoToAuthGraph
+                }  else AddAnimalEvent.ShowToast("Не удалось добавить!")
+                submitEvent(event)
             }
         }
     }
@@ -152,7 +154,8 @@ sealed class AddAnimalEvent : Event {
     class ShowToast(val message: String) : AddAnimalEvent()
     object OpenPhotoPicker : AddAnimalEvent()
     class ShowNextPage(val actionId: Int) : AddAnimalEvent()
-    class FinishFlow(val marker: AnimalCoordinate) : AddAnimalEvent()
+    object FinishFlow : AddAnimalEvent()
+    object GoToAuthGraph: AddAnimalEvent()
 }
 
 sealed class AddAnimalCurrentStateFlow {

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_graph"
+    app:startDestination="@id/auth_graph">
+
+    <include app:graph="@navigation/root_graph" />
+
+    <include app:graph="@navigation/auth_graph" />
+
+
+    <action
+        android:id="@+id/to_root_graph"
+        app:destination="@id/root_graph"
+        app:popUpTo="@id/auth_graph"
+        app:launchSingleTop="true"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/to_auth_graph"
+        app:destination="@id/auth_graph"
+        app:popUpTo="@id/root_graph"
+        app:launchSingleTop="true"
+        app:popUpToInclusive="true"
+        />
+
+</navigation>

@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.hilt.navigation.fragment.hiltNavGraphViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.viewbinding.ViewBinding
+import org.itmo.mop.animalmap.MainGraphDirections
 import org.itmo.mop.animalmap.R
 import org.itmo.mop.animalmap.presentation.base.BaseFragment
 
@@ -42,8 +43,10 @@ abstract class BaseAddAnimalFlowFragment<V : ViewBinding> :
                 findNavController().navigate(event.actionId)
             }
             is AddAnimalEvent.FinishFlow -> {
-                Log.e("newMarker", event.marker.toString())
                 findNavController().popBackStack(R.id.maps_fragment, false)
+            }
+            AddAnimalEvent.GoToAuthGraph -> {
+                findNavController().navigate(MainGraphDirections.toAuthGraph())
             }
         }
     }

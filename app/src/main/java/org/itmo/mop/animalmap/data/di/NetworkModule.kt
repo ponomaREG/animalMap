@@ -13,8 +13,12 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.itmo.mop.animalmap.data.NetworkConfig
 import org.itmo.mop.animalmap.data.api.CoordinatesAPI
+import org.itmo.mop.animalmap.data.api.UserAPI
+import org.itmo.mop.animalmap.data.api.interceptors.AuthHeaderInterceptor
 import org.itmo.mop.animalmap.data.repository.CoordinatesRepositoryImpl
+import org.itmo.mop.animalmap.data.repository.UserRepositoryImpl
 import org.itmo.mop.animalmap.domain.repository.CoordinatesRepository
+import org.itmo.mop.animalmap.domain.repository.UserRepository
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
@@ -24,9 +28,9 @@ object NetworkModule {
 
     @Singleton
     @Provides
-    fun provideRetrofit(): Retrofit = Retrofit.Builder()
+    fun provideRetrofit(authHeaderInterceptor: AuthHeaderInterceptor): Retrofit = Retrofit.Builder()
         .baseUrl(NetworkConfig.BASE_URL)
-        .addClient()
+        .addClient(authHeaderInterceptor)
         .addJsonConverter()
         .build()
 
@@ -35,6 +39,11 @@ object NetworkModule {
     fun provideRecipeApi(retrofit: Retrofit): CoordinatesAPI =
         retrofit.create(CoordinatesAPI::class.java)
 
+    @Singleton
+    @Provides
+    fun provideUserApi(retrofit: Retrofit): UserAPI =
+        retrofit.create(UserAPI::class.java)
+
 }
 
 @InstallIn(SingletonComponent::class)
@@ -42,14 +51,18 @@ object NetworkModule {
 interface RepositoryModule {
 
     @Binds
-    fun bindRecipeRepository(planetaryRepository: CoordinatesRepositoryImpl): CoordinatesRepository
+    fun bindCoordinatesRepository(coordinatesRepository: CoordinatesRepositoryImpl): CoordinatesRepository
+
+    @Binds
+    fun bindUserRepository(userRepository: UserRepositoryImpl): UserRepository
 }
 
 
-private fun Retrofit.Builder.addClient() = apply {
+private fun Retrofit.Builder.addClient(tokenInterceptor: AuthHeaderInterceptor) = apply {
     client(
         OkHttpClient.Builder()
             .addNetworkInterceptor(getHttpLoggingInterceptor())
+            .addInterceptor(tokenInterceptor)
             .build()
     )
 }

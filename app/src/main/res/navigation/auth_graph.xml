@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auth_graph"
+    app:startDestination="@id/enter_phone">
+
+    <fragment
+        android:id="@+id/enter_phone"
+        android:name="org.itmo.mop.animalmap.presentation.screen.auth_flow.AuthEnterPhoneFragment"
+        tools:layout="@layout/fragment_enter_phone"
+        >
+        <action
+            android:id="@+id/action_enter_phone_to_enter_otp_code"
+            app:destination="@id/enter_otp_code" />
+        <action
+            android:id="@+id/action_enter_phone_to_enter_login"
+            app:destination="@id/enter_login" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/enter_otp_code"
+        android:name="org.itmo.mop.animalmap.presentation.screen.auth_flow.AuthEnterOtpCodeFragment"
+        tools:layout="@layout/fragment_enter_otp_code"
+        >
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/enter_login"
+        android:name="org.itmo.mop.animalmap.presentation.screen.auth_flow.AuthEnterLoginFragment"
+        tools:layout="@layout/fragment_enter_login"
+        >
+        <action
+            android:id="@+id/action_enter_login_to_enter_otp_code"
+            app:destination="@id/enter_otp_code" />
+    </fragment>
+
+</navigation>

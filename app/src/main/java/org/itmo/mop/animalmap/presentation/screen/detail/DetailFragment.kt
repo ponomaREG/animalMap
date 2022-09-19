@@ -14,6 +14,7 @@ import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import org.itmo.mop.animalmap.R
 import org.itmo.mop.animalmap.databinding.FragmentDetailBinding
 import org.itmo.mop.animalmap.presentation.ext.loadByUrl
 import javax.inject.Inject
@@ -64,6 +65,7 @@ class DetailFragment : BottomSheetDialogFragment() {
             if (it.image != null) animalAvatarIv.loadByUrl(it.image)
             animalNameTv.text = it.name
             animalDescriptionTv.text = it.description
+            animalCreatedByTv.text = resources.getString(R.string.added_by, it.creatorLogin)
         }
     }
 }

@@ -54,7 +54,4 @@ class CoordinatesRepositoryImpl @Inject constructor(private val coordinatesAPI: 
         }
     }
 
-    private fun String.toRequestBody(): RequestBody =
-        this.toRequestBody("text/plain".toMediaTypeOrNull())
-
 }

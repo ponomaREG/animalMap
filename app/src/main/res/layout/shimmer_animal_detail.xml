@@ -21,10 +21,17 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="50sp"
+        android:layout_height="50dp"
         android:layout_marginTop="18dp"
         android:background="#B3B3B3"
         android:layout_marginHorizontal="16dp"
         android:paddingBottom="24dp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="16dp"
+        android:layout_marginTop="16dp"
+        android:background="#B3B3B3"
+        android:layout_marginHorizontal="16dp" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

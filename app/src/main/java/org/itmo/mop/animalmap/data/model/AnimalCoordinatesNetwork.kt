@@ -2,6 +2,7 @@ package org.itmo.mop.animalmap.data.model
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import okhttp3.internal.userAgent
 import org.itmo.mop.animalmap.domain.model.AnimalCoordinate
 
 @Serializable
@@ -12,6 +13,7 @@ data class AnimalCoordinatesNetwork(
     @SerialName("imageSrc") val image: String?,
     @SerialName("latitude") val latitude: String,
     @SerialName("longitude") val longitude: String,
+    @SerialName("userLogin") val creatorLogin: String? = null,
 )
 
 fun AnimalCoordinatesNetwork.toAnimalCoordinate(): AnimalCoordinate = AnimalCoordinate(
@@ -20,5 +22,6 @@ fun AnimalCoordinatesNetwork.toAnimalCoordinate(): AnimalCoordinate = AnimalCoor
     longitude = longitude,
     name = name,
     description = description,
-    image = image
+    image = image,
+    creatorLogin = creatorLogin
 )

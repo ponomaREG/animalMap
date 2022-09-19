@@ -1,6 +1,7 @@
 package org.itmo.mop.animalmap.presentation.screen.map
 
 import android.Manifest
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.activity.result.contract.ActivityResultContracts
@@ -30,6 +31,7 @@ class MapsFragment :
 
     override val viewModel: MapsViewModel by viewModels()
 
+    //TODO: Баг, Не всегда показывает локацию пользователя
     private val locationPermission =
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             gMap?.uiSettings?.isMyLocationButtonEnabled = isGranted
